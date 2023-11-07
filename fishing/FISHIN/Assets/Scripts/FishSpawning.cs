@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FishSpawning : MonoBehaviour
 {
-    public List<GameObject> Fishes = new List<GameObject>();
+    public GameObject[] Fishes;
 
     public int ChildCount = 0;
 
@@ -20,9 +20,8 @@ public class FishSpawning : MonoBehaviour
         
         if (ChildCount < 5)
         {
-            Instantiate(Fishes[Random.Range(0,2)], new Vector3(-4, Random.Range(-4f,2f), 0), Quaternion.identity);
+            Instantiate(Fishes[Random.Range(0,Fishes.Length)], new Vector3(-4, Random.Range(-4f,2f), 0), Quaternion.identity);
             ChildCount++;
-            
         }
     }
 }
