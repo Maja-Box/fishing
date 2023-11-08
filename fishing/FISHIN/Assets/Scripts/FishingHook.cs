@@ -23,6 +23,10 @@ public class FishingHook : MonoBehaviour
 
     public TMP_Text Score;
 
+    public Sprite NormalHook;
+    public Sprite HookOff;
+    GameObject hookedFish;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -63,7 +67,7 @@ public class FishingHook : MonoBehaviour
             }
         }
 
-        if (Health < 0)
+        if (Health <= 0)
         {
             if (FishCaught > Highscore)
             {
@@ -80,15 +84,14 @@ public class FishingHook : MonoBehaviour
         {
             FishOnHook = true;
             CanInterract = false;
-            if (TouchFish.gameObject.name == "Fish0")
-            {
-                //switch sprite to having fish0
-            }
-            else if (TouchFish.gameObject.name == "Fish1")
-            {
 
-            }
-            Destroy(TouchFish.gameObject);
+            //Destroy(TouchFish.gameObject);
+            TouchFish.gameObject.GetComponent<MoveCycle>().enabled = false;
+            TouchFish.transform.parent = transform;
+            hookedFish = TouchFish.gameObject;
+            hookedFish.transform.Rotate(0,0,90);
+            hookedFish.transform.localPosition = new Vector3(0, 0, 0);
+
             fishScript.ChildCount -= 1;
         }
         if (TouchFish.tag == "Surface" && FishOnHook == true)
@@ -97,22 +100,33 @@ public class FishingHook : MonoBehaviour
             Score.text = " " + FishCaught;
             FishOnHook = false;
             CanInterract = true;
-            //switch sprite to normal 
+            this.gameObject.GetComponent<SpriteRenderer>().sprite = NormalHook;
+            if(hookedFish != null)
+            {
+                Destroy(hookedFish);
+                hookedFish = null;
+            }
         }
 
         if (TouchFish.tag == "Trash" && TakenDamage == false)
         {
+            this.gameObject.GetComponent<SpriteRenderer>().sprite = HookOff;
             -- Health;
             CanInterract = false;
             TakenDamage = true;
             //switch sprite to damaged hook
             FishOnHook = false;
+            if (hookedFish != null)
+            {
+                Destroy(hookedFish);
+                hookedFish = null;
+            }
         }
         if (TouchFish.tag == "Surface" && TakenDamage == true && Health >= 0)
         {
             CanInterract = true;
             TakenDamage = false;
-            //switch sprite to normal
+            this.gameObject.GetComponent<SpriteRenderer>().sprite = NormalHook;
         }
     }
 }

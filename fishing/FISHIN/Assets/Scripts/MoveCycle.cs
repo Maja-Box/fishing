@@ -17,6 +17,16 @@ public class MoveCycle : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        int RandomDirection = Random.Range(-1, 1);
+        if (RandomDirection == -1)
+        {
+            direction = Vector2.left;
+        }
+        else
+        {
+            direction = Vector2.right;
+        }
+
         fishScript = FindObjectOfType<FishSpawning>();
         leftEdge = Camera.main.ViewportToWorldPoint(Vector3.zero);
         rightEdge = Camera.main.ViewportToWorldPoint(Vector3.right);
@@ -24,6 +34,7 @@ public class MoveCycle : MonoBehaviour
         if (direction == Vector2.left)
         {
             transform.position = new Vector3(4, Random.Range(-4f, 2f), 0);
+            this.gameObject.transform.localScale = new Vector3(-gameObject.transform.localScale.x, gameObject.transform.localScale.y, 0);
         }
     }
 

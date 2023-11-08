@@ -13,7 +13,7 @@ public class FishSpawning : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TimeLeft = Random.Range(1, 3);
+        TimeLeft = Random.Range(1, 5);
     }
 
     // Update is called once per frame
@@ -31,11 +31,11 @@ public class FishSpawning : MonoBehaviour
             }
         }
 
-        if (ChildCount < 5 && TimerDone == true)
+        if (ChildCount < 4 && TimerDone == true)
         {
-            Instantiate(Fishes[Random.Range(0,Fishes.Length)], new Vector3(-4, Random.Range(-4f,2f), 0), Quaternion.identity);
+            Instantiate(Fishes[Random.Range(0,Fishes.Length)], new Vector3(-4, Random.Range(-4.5f,3f), 0), Quaternion.identity);
             ChildCount++;
-            TimeLeft = Random.Range(1, 3);
+            TimeLeft = Random.Range(1, 5);
             TimerDone = false;
         }
     }
