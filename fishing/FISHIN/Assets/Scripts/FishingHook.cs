@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class FishingHook : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class FishingHook : MonoBehaviour
     public int FishCaught = 0;
     public int Health = 3;
     public int NumOfHearts;
+    public static int Highscore;
 
     public Image[] Hearts;
     public Sprite FullHeart;
@@ -61,6 +63,14 @@ public class FishingHook : MonoBehaviour
             }
         }
 
+        if (Health < 0)
+        {
+            if (FishCaught > Highscore)
+            {
+                Highscore = FishCaught;
+            }
+            SceneManager.LoadScene("StartScreen");
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D TouchFish)
@@ -70,7 +80,14 @@ public class FishingHook : MonoBehaviour
         {
             FishOnHook = true;
             CanInterract = false;
-            //switch sprite to having fish
+            if (TouchFish.gameObject.name == "Fish0")
+            {
+                //switch sprite to having fish0
+            }
+            else if (TouchFish.gameObject.name == "Fish1")
+            {
+
+            }
             Destroy(TouchFish.gameObject);
             fishScript.ChildCount -= 1;
         }
@@ -89,10 +106,12 @@ public class FishingHook : MonoBehaviour
             CanInterract = false;
             TakenDamage = true;
             //switch sprite to damaged hook
+            FishOnHook = false;
         }
         if (TouchFish.tag == "Surface" && TakenDamage == true && Health >= 0)
         {
             CanInterract = true;
+            TakenDamage = false;
             //switch sprite to normal
         }
     }
