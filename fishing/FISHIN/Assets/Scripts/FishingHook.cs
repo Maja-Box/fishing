@@ -13,6 +13,10 @@ public class FishingHook : MonoBehaviour
     public int Health = 3;
     public int NumOfHearts;
     public static int Highscore;
+    [SerializeField] AudioSource audiosource;
+    [SerializeField] AudioClip fishCaught;
+    [SerializeField] AudioClip pointGet;
+    [SerializeField] AudioClip hookBroke;
 
     public Image[] Hearts;
     public Sprite FullHeart;
@@ -109,13 +113,14 @@ public class FishingHook : MonoBehaviour
             hookedFish.transform.localPosition = new Vector3(0, 0, 0);
             moveScript = hookedFish.GetComponent<MoveCycle>();
             hookedFish.gameObject.GetComponent<BoxCollider2D>().enabled = false;
-
+            audiosource.PlayOneShot(fishCaught);
             fishScript.ChildCount -= 1;
         }
         if (TouchFish.tag == "Surface" && FishOnHook == true)
         {
             FishCaught +=  moveScript.Points;
             Score.text = " " + FishCaught;
+            audiosource.PlayOneShot(pointGet);
             FishOnHook = false;
             CanInterract = true;
             this.gameObject.GetComponent<SpriteRenderer>().sprite = NormalHook;
@@ -132,6 +137,7 @@ public class FishingHook : MonoBehaviour
             -- Health;
             CanInterract = false;
             TakenDamage = true;
+            audiosource.PlayOneShot(hookBroke);
             //switch sprite to damaged hook
             FishOnHook = false;
             if (hookedFish != null)
