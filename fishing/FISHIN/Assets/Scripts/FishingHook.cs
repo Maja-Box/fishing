@@ -27,6 +27,8 @@ public class FishingHook : MonoBehaviour
     public bool TakenDamage = false;
 
     public TMP_Text Score;
+    public TMP_Text Timer;
+    float TimeLeft;
 
     public Sprite NormalHook;
     public Sprite HookOff;
@@ -39,18 +41,24 @@ public class FishingHook : MonoBehaviour
         FishCaught = 0;
         fishScript = FindObjectOfType<FishSpawning>();
         Score.text = " " + FishCaught;
-        
+        TimeLeft = 120;
     }
     
     
     // Update is called once per frame
     void Update()
     {
+        TimeLeft -= Time.deltaTime;
 
+       
+        
+            updateTimer(TimeLeft);
+        if (TimeLeft < 0)
+            SceneManager.LoadScene("StartScreen");
 
-        //transform.Translate(new Vector2(0, Input.GetAxis("Vertical") * Time.deltaTime * 10));
+            //transform.Translate(new Vector2(0, Input.GetAxis("Vertical") * Time.deltaTime * 10));
 
-        if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.W))
         {
             transform.Translate(new Vector2(0,  1 * Time.deltaTime * 5));
 
@@ -152,6 +160,16 @@ public class FishingHook : MonoBehaviour
             TakenDamage = false;
             this.gameObject.GetComponent<SpriteRenderer>().sprite = NormalHook;
         }
+    }
+
+    void updateTimer(float currentTime)
+    {
+        currentTime += 1;
+
+        float minutes = Mathf.FloorToInt(currentTime / 60);
+        float seconds = Mathf.FloorToInt(currentTime % 60);
+
+        Timer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }
 
