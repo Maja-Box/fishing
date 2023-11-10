@@ -8,7 +8,8 @@ using UnityEngine.SceneManagement;
 public class FishingHook : MonoBehaviour
 {
     FishSpawning fishScript;
-    public int FishCaught = 0;
+    MoveCycle moveScript;
+    public static int FishCaught = 0;
     public int Health = 3;
     public int NumOfHearts;
     public static int Highscore;
@@ -26,20 +27,35 @@ public class FishingHook : MonoBehaviour
     public Sprite NormalHook;
     public Sprite HookOff;
     GameObject hookedFish;
+    int height; 
 
     // Start is called before the first frame update
     void Start()
     {
+        FishCaught = 0;
         fishScript = FindObjectOfType<FishSpawning>();
         Score.text = " " + FishCaught;
+        
     }
-
+    
+    
     // Update is called once per frame
     void Update()
     {
-        
 
-        transform.Translate(new Vector2(0, Input.GetAxis("Vertical") * Time.deltaTime * 10));
+
+        //transform.Translate(new Vector2(0, Input.GetAxis("Vertical") * Time.deltaTime * 10));
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            transform.Translate(new Vector2(0,  1 * Time.deltaTime * 5));
+
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            transform.Translate(new Vector2(0,  - 1 * Time.deltaTime * 5));
+
+        }
 
         if (Health > NumOfHearts)
         {
@@ -91,12 +107,14 @@ public class FishingHook : MonoBehaviour
             hookedFish = TouchFish.gameObject;
             hookedFish.transform.Rotate(0,0,90);
             hookedFish.transform.localPosition = new Vector3(0, 0, 0);
+            moveScript = hookedFish.GetComponent<MoveCycle>();
+            hookedFish.gameObject.GetComponent<BoxCollider2D>().enabled = false;
 
             fishScript.ChildCount -= 1;
         }
         if (TouchFish.tag == "Surface" && FishOnHook == true)
         {
-            ++FishCaught;
+            FishCaught +=  moveScript.Points;
             Score.text = " " + FishCaught;
             FishOnHook = false;
             CanInterract = true;

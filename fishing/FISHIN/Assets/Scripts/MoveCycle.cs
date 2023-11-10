@@ -8,6 +8,7 @@ public class MoveCycle : MonoBehaviour
     public float speed = 1f;
     public int size = 1;
     float yPosition;
+    public int Points;
 
     private Vector3 leftEdge;
     private Vector3 rightEdge;
